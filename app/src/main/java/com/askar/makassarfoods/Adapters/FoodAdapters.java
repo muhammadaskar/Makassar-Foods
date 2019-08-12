@@ -23,14 +23,17 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
     private LayoutInflater mInflater;
     private ViewPager2 viewPager2;
 
+    private List<String> mData;
+
     public FoodAdapters(List<Food> foodList) {
         this.foodList = foodList;
     }
 
-    public FoodAdapters(List<Food> foodList, Context context, ViewPager2 viewPager2) {
-        this.foodList = foodList;
+    public FoodAdapters(List<String> mData, Context context, ViewPager2 viewPager2, List<Food> foodList) {
+        this.mData = mData;
         this.mInflater = LayoutInflater.from(context);
         this.viewPager2 = viewPager2;
+        this.foodList = foodList;
     }
 
     @NonNull

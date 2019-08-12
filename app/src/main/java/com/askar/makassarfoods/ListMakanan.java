@@ -3,6 +3,7 @@ package com.askar.makassarfoods;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,9 @@ public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnCli
     private FoodAdapters foodAdapter;
     private List<Food> foodList = new ArrayList<>();
 
+
+    private ViewPager2 viewPager2;
+
     private static final String KEY = "kunci";
 
     @Override
@@ -32,6 +36,7 @@ public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_makanan);
 
+        viewPager2 = findViewById(R.id.viewPager2);
         recyclerView = findViewById(R.id.rv_foods);
         initComponents();
     }
