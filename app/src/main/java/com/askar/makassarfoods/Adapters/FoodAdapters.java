@@ -1,5 +1,6 @@
 package com.askar.makassarfoods.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.askar.makassarfoods.Models.Food;
 import com.askar.makassarfoods.R;
@@ -18,9 +20,17 @@ import java.util.List;
 public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder> {
 
     private List<Food> foodList;
+    private LayoutInflater mInflater;
+    private ViewPager2 viewPager2;
 
     public FoodAdapters(List<Food> foodList) {
         this.foodList = foodList;
+    }
+
+    public FoodAdapters(List<Food> foodList, Context context, ViewPager2 viewPager2) {
+        this.foodList = foodList;
+        this.mInflater = LayoutInflater.from(context);
+        this.viewPager2 = viewPager2;
     }
 
     @NonNull
