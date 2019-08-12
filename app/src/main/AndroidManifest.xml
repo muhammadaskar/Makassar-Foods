@@ -13,10 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AboutActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".DetailsFoods" />
-        <activity android:name=".ListMakanan" />
+        <activity android:name=".Activity"></activity>
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".DetailsFoods" /> <!-- <activity android:name=".ListMakanan" /> -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

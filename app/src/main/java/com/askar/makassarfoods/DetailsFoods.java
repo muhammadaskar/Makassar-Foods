@@ -9,13 +9,13 @@ import android.widget.TextView;
 import com.askar.makassarfoods.Models.Food;
 import com.squareup.picasso.Picasso;
 
+import static com.askar.makassarfoods.Constants.Constants.KEY;
+
 public class DetailsFoods extends AppCompatActivity {
 
     private ImageView imageView;
     private TextView textViewNama,
             textViewJenis, textViewDeskripsi;
-
-    private ListMakanan makanan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +26,11 @@ public class DetailsFoods extends AppCompatActivity {
         textViewNama = findViewById(R.id.tv_nama_detail);
         textViewJenis = findViewById(R.id.tv_jenis_detail);
         textViewDeskripsi = findViewById(R.id.tv_deskripsi_detail);
-
-        makanan = new ListMakanan();
         getDetail();
     }
 
     private void getDetail(){
-        final Food food = (Food) getIntent().getParcelableExtra(makanan.getKEY());
+        final Food food = (Food) getIntent().getParcelableExtra(KEY);
         if (food != null){
             Picasso.get().load(food.getPhoto()).into(imageView);
             textViewNama.setText(food.getNama());

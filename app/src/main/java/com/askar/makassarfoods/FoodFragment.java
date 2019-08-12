@@ -1,16 +1,15 @@
 package com.askar.makassarfoods;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.askar.makassarfoods.Adapters.FoodAdapters;
 import com.askar.makassarfoods.Models.Food;
@@ -18,65 +17,35 @@ import com.askar.makassarfoods.Models.Food;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnClickListener{
+import static com.askar.makassarfoods.Constants.Constants.KEY;
 
-    private Food food;
+public class FoodFragment extends Fragment implements FoodAdapters.OnClickListener{
+
+    View view;
     private RecyclerView recyclerView;
-    private FoodAdapters foodAdapter;
     private List<Food> foodList = new ArrayList<>();
+    private FoodAdapters foodAdapter;
+    private Food food;
 
-
-    private static final String KEY = "kunci";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_makanan);
-
-        recyclerView = findViewById(R.id.rv_foods);
-        initComponents();
+    public FoodFragment(){
     }
 
-    private void initComponents(){
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.food_fragment, container, false);
+        recyclerView = view.findViewById(R.id.rv_foods_fragment);
+
+        initsComponent();
+        return view;
+    }
+
+    private void initsComponent(){
         data();
-        try {
-            foodAdapter = new FoodAdapters(foodList);
-            foodAdapter.setListener(this);
-            recyclerView.setAdapter(foodAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        } catch (Exception e){
-            Log.d("peringatan", "Terjadi Kesalahan Pada "+e);
-        }
-
-    }
-
-    @Override
-    public void onClick(View view, int position) {
-        food = new Food();
-        food = foodList.get(position);
-        startActivity(new Intent(ListMakanan.this, DetailsFoods.class)
-            .putExtra(KEY, food));
-    }
-
-    public static String getKEY() {
-        return KEY;
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case R.id.acttion_about:
-                Intent i = new Intent(this, AboutActivity.class);
-                startActivity(i);
-                break;
-                default:
-        return super.onOptionsItemSelected(menuItem);
-        }
-        return true;
+        foodAdapter = new FoodAdapters(getContext(), foodList);
+        foodAdapter.setListener(this);
+        recyclerView.setAdapter(foodAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void data(){
@@ -92,21 +61,6 @@ public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnCli
         Food food3 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/3-8.jpg", "Konro", "Makanan",
                 "Sup Konro adalah masakan sup iga sapi khas Indonesia yang berasal dari tradisi Bugis dan Makassar. Sup ini biasanya dibuat dengan bahan iga sapi atau daging sapi. Masakan berkuah warna coklat kehitaman ini biasa dimakan dengan burasa dan ketupat yang dipotong-potong terlebih dahulu. Warna gelap ini berasal dari buah kluwek yang memang berwarna hitam. Bumbunya relatif \"kuat\" akibat digunakannya ketumbar. Rasa pedas dan berbumbu ini dibuat dari campuran rempah-rempah, seperti ketumbar, keluwak (buah yang menyebabkan masakan berwarna hitam), sedikit pala, kunyit, kencur, kayu manis, asam, daun lemon, cengkih, dan daun salam.");
         foodList.add(food3);
-
-        Food food4 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/4-8.jpg", "Barongko", "Dessert",
-                "Barongko merupakan makanan khas Bugis-Makassar yang terbuat dari pisang yang dihaluskan, telur, santan, gula pasir, dan garam. Kemudian dibungkus daun pisang lalu dikukus. Jika sudah matang, dimasukkan ke dalam kulkas.\n" +
-                        "\n" +"Dahulu, Barongko disajikan sebagai hidangan penutup bagi para raja Bugis. Selain itu juga sering disajikan saat acara adat seperti sunatan, akikah, pernikahan, syukuran dan lain sebagainya. Hingga kinipun Barongko masih biasa disajikan saat pesta adat. Selain itu pula, Barongko masih dapat dijumpai ketika bulan Ramadhan sebagai menu untuk berbuka puasa.\n" +
-                        "\n" +
-                        "Untuk membuat Barongko ini haruslah dikerjakan oleh orang yang sudah berpengalaman. Dengan tujuan untuk mempertahankan kualitas rasa dan kelezatan yang khas dari Barongko. Karena itulah Barongko tidak mudah dijumpai di pasaran.");
-        foodList.add(food4);
-
-        Food food5 = new Food("http://beritamks.com/bm/wp-content/uploads/2015/09/MAKASSAR_PISANG_EPE_-860x450.jpg", "Pisang Epe", "Dessert",
-                "Pisang Epe merupakan makanan berbahan dasar pisang raja yang belum terlalu matang dan lembek, lalu dibakar. Kata “epe” sendiri berasal dari Bahasa Makassar yang artinya “jepit”, jadi maksud dari nama Pisang Epe adalah pisang bakar yang dijepit dan menjadi gepeng. Sesuai dengan namanya, Pisang Epe dimasak dengan cara dipanggang di atas bara api setelah sebelumnya dipress hingga menjadi gepeng. Pisang Epe yang telah melalui proses pembakaran biasanya disiram dengan saus yang berbahan dasar gula merah yang telah dicairkan sebagai topping. Namun saat ini, jenis saus Pisang Epe telah menyesuaikan zaman dengan ditambahkannya berbagai variasi saus seperti coklat durian, keju, dan sebagainya.");
-        foodList.add(food5);
-
-        Food food6 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/6-8.jpg", "Es Pallu Butung", "Dessert",
-                "Pallu Butung adalah makanan khas Sulawesi Selatan, makanan ini sering dijadikan hidangan untuk berbuka puasa di saat bulan Ramadan. Pallu Butung ini hampir mirip dengan Pisang Ijo.\n" +"\n" +"Pallu Butung terbuat dari campuran tepung beras, santan, gula pasir, daun pandan, vanili dan garam yang kemudian sampai matang dan kental. lalu dimasukkan potongan-potongan pisang raja yang juga sudah masak lalu diaduk. Pallu Butung dapat dihidangkan hangat-hangat, juga bisa dihidangkan dingin dengan menambah parutan es di atasnya. Pallu Butung juga bisa ditambahkan sedikit sirup untuk menambah warna dan rasa manis.");
-        foodList.add(food6);
 
         Food food7 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/7-8.jpg", "Gogoso", "Makanan",
                 "Gogoso adalah salah satu makanan khas orang bugis makassar yang sangat digemari di Sulawesi Selatan ketika lebaran. Gogos atau gogoso adalah makanan khas Makassar yang mirip dengan lemper dari jawa atau Lalampa dari Manado. Bentuknya lebih panjang dan agak langsing bila dibandingkan dengan lemper. Gogos sendiri ada yang tanpa isian dan ada juga yang dengan isian. Gogos yang ada isian disebut dengan gogos kambu atau gogos isi. Isinya biasanya ikan tongkol yang dicampur dengan kelapa sangrai dan bumbu.");
@@ -139,42 +93,20 @@ public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnCli
                 "\n" +"Panganan ini terbuat dari beras yang dimasak tertebih dahulu dengan santan yang banyak hingga menjadi nasi lembek dan selanjutnya dibungkus dengan daun pisang. Biasanya dibuat menjadi dua bagian dalam satu ikatan (menggunakan tali rapia atau daun pisang) kemudian direbus hingga matang. Panganan ini juga biasanya ditemui di luar provinsi Sulawesi Selatan seperti Gorontalo atau Kalimantan dan beberapa daerah lain di Indonesia dan Malaysia. Mungkin dikarenakan banyaknya suku Makassar dan Bugis yang merantau dan menetap di daerah-daerah tersebut sehingga panganan ini ikut menjadi bagian dari tradisi hari lebaran di daerah-daerah tersebut.");
         foodList.add(food13);
 
-        Food food14 = new Food("http://2.bp.blogspot.com/-LAh7KgniFLQ/Vj0mYyKVXkI/AAAAAAAADZc/InM6aeSAVrA/s1600/IMG_20151106_093933_edit.jpg", "Putu Cangkir",
-                "Dessert", "Putu cangkiri’ ini adalah makanan yang terbuat dari ketan yang memiliki bentuk mirip bagian bawah cangkir bila posisinya ditempatkan terbalik. Umumnya dibuat dengan dua variasi rasa yaitu manis dengan gula merah dan gula putih. Jika memakai gula merah warna Putu Cangkiri’ juga berwarna merah begitu juga saat memakai gula pasir.");
-        foodList.add(food14);
-
-        Food food15 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/16-7.jpg", "Baje Canggoreng", "Dessert",
-                "Baje Canggoreng merupakan kue tradisional yang bahan dasarnya adalah dari bahan kacang tanah dan juga gula merah, rasanya di lidah begitu menagihkan. Rasanya begitu manis dan gurih. Kue ini bisa bertahan kurang lebih satu bulan dalam kemasan. Dan makanan ini biasanya terdapat di penjual pinggir jalan sepanjang jalan Poros wilayah Sulawesi Selatan.");
-        foodList.add(food15);
-
-        Food food16 = new Food("https://2.bp.blogspot.com/-GMYylolQf7k/WsH3_YS6jRI/AAAAAAAAAKM/EoIYANqbpr07znpddLwNlgDyKzH90y4wACLcBGAs/s1600/Dange.jpg", "Dange", "Dessert", "Kue Dangge adalah merupakan kue basah hasil olahan dari tepung ketan hitam, dipadukan dengan parutan kepala muda, dan gula merah , hinggah kue dange ini sangat banyak digemari, kue dange ini bisa anda dapatkan di pangkep yakni dijalan poros makassar – pare, tepatnya di kecamatan sigeri, dan Kecamatan Mandalle kurang lebih 60 kilo meter menempuh perjalan dari kota makassar jika bertolak dari bandara internasional sultan hasanuddin");
-        foodList.add(food16);
-
-        Food food17 = new Food("http://1.bp.blogspot.com/-L7Ac-VTxNhI/VMp4CvX41FI/AAAAAAAAIOU/wakHb1fe_Ys/s1600/cangkuning_4.jpg", "Doko-doko Cangkuning", "Dessert", "Doko-doko Cangkuning biasa disebut di daerah bugis, dan di daerah Makassar biasa disebut dengan Roko-roko Cangkuning. Terbuat dari bahan tepung beras ketan, tepung kanji, air kapur siri, daun suji yang dicampur menjadi satu adonan. Kemudian untuk bagian isinya terbuat dari gula merah dan parutan kelapa. Kemudian terakhir dibungkus dengan daun pisang berbentuk kerucut. Saat ini jajanan ini banyak dijual sebagai bahan untuk buka puasa di kota Makassar.");
-        foodList.add(food17);
-
-        Food food18 = new Food("https://resepnusantara.id/wp-content/uploads/2017/12/baruasa-300x300.jpg", "Baruasa", "Dessert",
-                "Baruasa' adalah kue yang terbuat dari tepung terigu yang digoreng bersama kelapa. Ada dua rasa yang berbeda yakni baruasa dengan campuran gula aren dan baruasa dengan campuran gula pasir.");
-        foodList.add(food18);
-
-        Food food19 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/20-5.jpg", "Cucuru Bayao", "Dessert",
-                "Cucuru Bayao, si Kue Manis Simbol Harapan Pengantin. ... Dalam sebuah bosara, baki berkaki tinggi berisikan kue, cucuru bayao disajikan bersama barongko, taloba, biji nangka, kue pelita, dan sikaporo. Dalam bahasa Makassar, 'cucuru' berarti kue, sedangkan 'bayao' artinya telur.");
-        foodList.add(food19);
-
         Food food20 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/21-3.jpg", "Sokko / Sangkolo", "Makanan",
                 "Sokko/Sangkolo juga merupakan makanan khas yang terbuat dari beras ketan putih yang dikukus sampai matang, terkadang kue ini juga memakai beras ketan hitam. Songkolo begadang ini dihidangkan diatas piring dan diberikan taburan yang terbuat dari kelapa parut yang telah digoreng. Lauk pendampingnya yang biasa dibuat khas dari sini yaitu ikan asin kering dan telur itik asin. Jika pembeli yang bermaksud untuk mengkonsumsi kue ini dirumah, maka setiap porsi songkolo ini harus dibungkus dengan menggunakan bahan dari daun pisang yang di ikatkan dengan karet.");
         foodList.add(food20);
 
-        Food food21 = new Food("https://scontent.cdninstagram.com/vp/78f9cd1c95e767a583b7da1e5df1163f/5D64FFDE/t51.2885-15/e35/s480x480/58409993_432621740642161_4523678084535439417_n.jpg?_nc_ht=scontent-ort2-2.cdninstagram.com", "Buroncong", "Dessert",
-                "Buroncong adalah salah satu kue tradisional khas Bugis Makassar yang hingga saat ini masih diminati. ... Jajanan ini terbuat dari campuran tepung terigu, santan dan parutan kelapa muda, gula pasir, garam serta penambahan soda kue.");
-        foodList.add(food21);
-
         Food food22 = new Food("https://scontent-sin6-2.cdninstagram.com/vp/c886318a67117eddfb055e8ad77c352d/5DB143AD/t51.2885-15/e35/55790172_2413667038656883_7535113424263026490_n.jpg?_nc_ht=scontent-sin6-2.cdninstagram.com&se=7&ig_cache_key=MjAyMzA4MDQzNzg3MzkwMzM3OA%3D%3D.2&_nc_ig_catcb=1",
                 "Jalangkote", "Makanan", "Jalangkote adalah makanan ringan kuliner khas Makassar yang bentuknya serupa dengan kue pastel. Bedanya kue pastel memiliki kulit yang lebih tebal dibandingkan jalangkote dan bila pastel dimakan bersama cabe rawit, jalangkote dimakan bersama sambal cair campuran cuka dan cabe. Jalangkote memiliki isi wortel dan kentang yang dipotong dadu, tauge, serta laksa yang ditumis dengan menggunakan bawang putih, bawang merah, merica, dan bumbu-bumbu lainnya.[1] Beberapa jalangkote menambahkan seperempat atau setengah telur rebus dan daging cincang untuk isinya. Kulit jalangkote terbuat dari bahan dasar tepung terigu, telur, santan, mentega, dan garam.");
         foodList.add(food22);
+    }
 
-        Food food23 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/24-2.jpg", "Sarabba", "Minuman",
-                "Sarabba merupakan minuman yang berasal dari Kota Makassar yang dibuat dengan bahan utama dari jahe, gula merah, telur kuning serta santan. Sarabba ini mempunyai citra rasa yang begitu menggoda lidah sehingga para pembeli ketagihan saat mencicipinya. Sarabba terbukti dipercaya dapat meningkatkan stamina tubuh, menghilangkan masuk angin, serta menyembuhkan penyakit yang datang kepada kita.");
-        foodList.add(food23);
+    @Override
+    public void onClick(View view, int position) {
+        food = new Food();
+        food = foodList.get(position);
+        startActivity(new Intent(getActivity(), DetailsFoods.class)
+                .putExtra(KEY, food));
     }
 }
