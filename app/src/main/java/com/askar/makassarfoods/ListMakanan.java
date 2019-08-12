@@ -44,7 +44,7 @@ public class ListMakanan extends AppCompatActivity implements FoodAdapters.OnCli
     private void initComponents(){
         data();
         try {
-            foodAdapter = new FoodAdapters(this, viewPager2, foodList);
+            foodAdapter = new FoodAdapters(foodList);
             foodAdapter.setListener(this);
             recyclerView.setAdapter(foodAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
