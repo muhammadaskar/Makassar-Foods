@@ -55,6 +55,9 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
                 .placeholder(R.drawable.maskot)
                 .into(holder.imgView);
 
+        holder.linearLayout.setBackgroundResource(colorArray[position]);
+
+
     }
 
     @Override

@@ -7,19 +7,11 @@
     android:background="#E0E0E0"
     tools:context=".ListMakanan">
 
-    <!--<androidx.viewpager2.widget.ViewPager2-->
-        <!--android:id="@+id/viewPager2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--tools:listitem="@layout/item_foods">-->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_foods"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_foods">
         </androidx.recyclerview.widget.RecyclerView>
-
-    <!--</androidx.viewpager2.widget.ViewPager2>-->
 
 </RelativeLayout>
