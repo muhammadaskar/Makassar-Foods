@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
     private ViewPager2 viewPager2;
 
     private List<String> mData;
+
+    private int[] colorArray = new int[]{android.R.color.black, android.R.color.holo_blue_dark, android.R.color.holo_green_dark, android.R.color.holo_red_dark};
 
     public FoodAdapters(List<Food> foodList) {
         this.foodList = foodList;
@@ -51,6 +54,7 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
         Picasso.get().load(food.getPhoto())
                 .placeholder(R.drawable.maskot)
                 .into(holder.imgView);
+
     }
 
     @Override
@@ -62,6 +66,7 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
         ImageView imgView;
         TextView textViewNama,
                 textViewJenis;
+        LinearLayout linearLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +74,7 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
             imgView = itemView.findViewById(R.id.img_list);
             textViewNama = itemView.findViewById(R.id.nama_list);
             textViewJenis = itemView.findViewById(R.id.jenis_list);
+            linearLayout = itemView.findViewById(R.id.container);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
