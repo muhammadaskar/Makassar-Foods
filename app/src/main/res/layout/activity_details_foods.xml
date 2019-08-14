@@ -15,7 +15,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000">
+            android:background="#DA4646">
 
 
             <ImageView
@@ -25,13 +25,15 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_arrow_back"
-                android:onClick="clickKembali"/>
+                <ImageView
+                    style="@style/TextAppearance.AppCompat.Widget.Button"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:onClick="clickKembali"/>
+
 
         </FrameLayout>
 

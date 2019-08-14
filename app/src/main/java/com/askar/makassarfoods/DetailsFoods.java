@@ -41,17 +41,11 @@ public class DetailsFoods extends AppCompatActivity {
             textViewNama.setText(food.getNama());
             textViewJenis.setText(food.getJenis());
             textViewDeskripsi.setText(food.getDeskripsi());
-
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle("Detail "+food.getJenis());
-            }
-
         }
     }
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Back", Toast.LENGTH_SHORT).show();
         super.onBackPressed();
     }
 

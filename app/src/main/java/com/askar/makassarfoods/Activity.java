@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.askar.makassarfoods.Adapters.ViewPagerAdapter;
@@ -70,7 +71,7 @@ public class Activity extends AppCompatActivity {
     }
 
     private void exitDialog(CharSequence message){
-        new AlertDialog.Builder(Activity.this)
+        new AlertDialog.Builder(Activity.this, R.style.alertDialogStyle)
                 .setMessage(message)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -84,7 +85,5 @@ public class Activity extends AppCompatActivity {
                     }
                 }).show();
     }
-
-    // TODO : Edit color alertdialog
 
 }
