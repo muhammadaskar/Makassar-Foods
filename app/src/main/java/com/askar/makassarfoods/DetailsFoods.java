@@ -2,9 +2,14 @@ package com.askar.makassarfoods;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.askar.makassarfoods.Models.Food;
 import com.squareup.picasso.Picasso;
@@ -42,5 +47,16 @@ public class DetailsFoods extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Back", Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
+    }
+
+
+    public void clickKembali(View view) {
+        onBackPressed();
     }
 }

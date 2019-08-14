@@ -83,7 +83,8 @@ public class Activity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 }).show();
-
     }
+
+    // TODO : Edit color alertdialog
 
 }

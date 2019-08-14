@@ -17,7 +17,7 @@
         <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".DetailsFoods" /> <!-- <activity android:name=".ListMakanan" /> -->
+        <activity android:name=".DetailsFoods" android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- <activity android:name=".ListMakanan" /> -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
