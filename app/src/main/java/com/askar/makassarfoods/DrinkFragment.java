@@ -25,7 +25,7 @@ public class DrinkFragment extends Fragment implements FoodAdapters.OnClickListe
     View view;
 
     private RecyclerView recyclerView;
-    private List<Food> foodList = new ArrayList<>();
+    private List<Food> drinkList = new ArrayList<>();
     private FoodAdapters drinkAdapter;
     private Food drink;
 
@@ -39,28 +39,27 @@ public class DrinkFragment extends Fragment implements FoodAdapters.OnClickListe
         recyclerView = view.findViewById(R.id.rv_drinks_fragment);
 
         initsComponent();
-
         return view;
     }
 
     private void initsComponent(){
         data();
-        drinkAdapter = new FoodAdapters(getContext(), foodList);
+        drinkAdapter = new FoodAdapters(getContext(), drinkList);
         drinkAdapter.setListener(this);
         recyclerView.setAdapter(drinkAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void data(){
-        Food drink1 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/24-2.jpg", "Sarabba", "Minuman",
-                "Sarabba merupakan minuman yang berasal dari Kota Makassar yang dibuat dengan bahan utama dari jahe, gula merah, telur kuning serta santan. Sarabba ini mempunyai citra rasa yang begitu menggoda lidah sehingga para pembeli ketagihan saat mencicipinya. Sarabba terbukti dipercaya dapat meningkatkan stamina tubuh, menghilangkan masuk angin, serta menyembuhkan penyakit yang datang kepada kita.");
-        foodList.add(drink1);
+            Food drink1 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/24-2.jpg", "Sarabba", "Minuman",
+                    "Sarabba merupakan minuman yang berasal dari Kota Makassar yang dibuat dengan bahan utama dari jahe, gula merah, telur kuning serta santan. Sarabba ini mempunyai citra rasa yang begitu menggoda lidah sehingga para pembeli ketagihan saat mencicipinya. Sarabba terbukti dipercaya dapat meningkatkan stamina tubuh, menghilangkan masuk angin, serta menyembuhkan penyakit yang datang kepada kita.");
+            drinkList.add(drink1);
     }
 
     @Override
     public void onClick(View view, int position) {
         drink = new Food();
-        drink = foodList.get(position);
+        drink = drinkList.get(position);
         startActivity(new Intent(getActivity(), DetailsFoods.class)
             .putExtra(KEY, drink));
     }

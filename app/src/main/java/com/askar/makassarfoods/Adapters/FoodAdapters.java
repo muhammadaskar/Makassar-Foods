@@ -23,10 +23,6 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
     private Context context;
     private List<Food> foodList;
 
-    public FoodAdapters(List<Food> foodList) {
-        this.foodList = foodList;
-    }
-
     public FoodAdapters(Context context, List<Food> foodList) {
         this.context = context;
         this.foodList = foodList;

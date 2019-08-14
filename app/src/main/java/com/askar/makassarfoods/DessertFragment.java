@@ -88,6 +88,10 @@ public class DessertFragment extends Fragment implements FoodAdapters.OnClickLis
         Food food19 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/20-5.jpg", "Cucuru Bayao", "Dessert",
                 "Cucuru Bayao, si Kue Manis Simbol Harapan Pengantin. ... Dalam sebuah bosara, baki berkaki tinggi berisikan kue, cucuru bayao disajikan bersama barongko, taloba, biji nangka, kue pelita, dan sikaporo. Dalam bahasa Makassar, 'cucuru' berarti kue, sedangkan 'bayao' artinya telur.");
         foodList.add(food19);
+
+        Food drink1 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/24-2.jpg", "Sarabba", "Minuman",
+                "Sarabba merupakan minuman yang berasal dari Kota Makassar yang dibuat dengan bahan utama dari jahe, gula merah, telur kuning serta santan. Sarabba ini mempunyai citra rasa yang begitu menggoda lidah sehingga para pembeli ketagihan saat mencicipinya. Sarabba terbukti dipercaya dapat meningkatkan stamina tubuh, menghilangkan masuk angin, serta menyembuhkan penyakit yang datang kepada kita.");
+        foodList.add(drink1);
     }
 
     @Override

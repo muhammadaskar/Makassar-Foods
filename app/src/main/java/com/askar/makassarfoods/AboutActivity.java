@@ -1,10 +1,12 @@
 package com.askar.makassarfoods;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toolbar;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -12,7 +14,6 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
     }
 
     public void clickIntentEmail(View view) {
@@ -22,5 +23,14 @@ public class AboutActivity extends AppCompatActivity {
         i.putExtra(Intent.EXTRA_SUBJECT, "Assalamualaikum Askar");
         i.putExtra(Intent.EXTRA_EMAIL, email);
         startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    public void clickKembali(View view) {
+        onBackPressed();
     }
 }
