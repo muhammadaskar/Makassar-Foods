@@ -3,11 +3,29 @@ package com.askar.makassarfoods.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Food implements Parcelable {
 
+    @SerializedName("id")
+    @Expose
+    private int id;
+
+    @SerializedName("imgView")
+    @Expose
     private String photo;
+
+    @SerializedName("nama")
+    @Expose
     private String nama;
+
+    @SerializedName("jenis")
+    @Expose
     private String jenis;
+
+    @SerializedName("deskripsi")
+    @Expose
     private String deskripsi;
 
     public Food() {
@@ -30,6 +48,34 @@ public class Food implements Parcelable {
         this.jenis = jenis;
         this.deskripsi = deskripsi;
     }
+
+    public Food(int id, String photo, String nama, String jenis, String deskripsi) {
+        this.id = id;
+        this.photo = photo;
+        this.nama = nama;
+        this.jenis = jenis;
+        this.deskripsi = deskripsi;
+    }
+
+    protected Food(Parcel in) {
+        id = in.readInt();
+        photo = in.readString();
+        nama = in.readString();
+        jenis = in.readString();
+        deskripsi = in.readString();
+    }
+
+    public static final Creator<Food> CREATOR = new Creator<Food>() {
+        @Override
+        public Food createFromParcel(Parcel in) {
+            return new Food(in);
+        }
+
+        @Override
+        public Food[] newArray(int size) {
+            return new Food[size];
+        }
+    };
 
     public String getPhoto() {
         return photo;
@@ -63,25 +109,6 @@ public class Food implements Parcelable {
         this.deskripsi = deskripsi;
     }
 
-    protected Food(Parcel in) {
-        photo = in.readString();
-        nama = in.readString();
-        jenis = in.readString();
-        deskripsi = in.readString();
-    }
-
-    public static final Creator<Food> CREATOR = new Creator<Food>() {
-        @Override
-        public Food createFromParcel(Parcel in) {
-            return new Food(in);
-        }
-
-        @Override
-        public Food[] newArray(int size) {
-            return new Food[size];
-        }
-    };
-
     @Override
     public int describeContents() {
         return 0;
@@ -89,6 +116,7 @@ public class Food implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(photo);
         parcel.writeString(nama);
         parcel.writeString(jenis);

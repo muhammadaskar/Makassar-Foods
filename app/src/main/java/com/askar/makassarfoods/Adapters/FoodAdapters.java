@@ -28,6 +28,11 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
         this.foodList = foodList;
     }
 
+    public void setDataFoodList(List<Food> foodList){
+        this.foodList = foodList;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,7 +55,7 @@ public class FoodAdapters extends RecyclerView.Adapter<FoodAdapters.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return foodList.size();
+        return (foodList != null) ? foodList.size() : 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

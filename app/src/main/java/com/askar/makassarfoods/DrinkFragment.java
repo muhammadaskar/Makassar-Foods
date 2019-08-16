@@ -13,10 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.askar.makassarfoods.Adapters.FoodAdapters;
+import com.askar.makassarfoods.Generator.ServiceGenerator;
 import com.askar.makassarfoods.Models.Food;
+import com.askar.makassarfoods.Services.FoodService;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.askar.makassarfoods.Constants.Constants.KEY;
 
@@ -29,6 +36,8 @@ public class DrinkFragment extends Fragment implements FoodAdapters.OnClickListe
     private FoodAdapters drinkAdapter;
     private Food drink;
 
+    private FoodService drinkService;
+
     public DrinkFragment(){
     }
 
@@ -37,17 +46,31 @@ public class DrinkFragment extends Fragment implements FoodAdapters.OnClickListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.drink_fragment, container, false);
         recyclerView = view.findViewById(R.id.rv_drinks_fragment);
-
+        drinkService = ServiceGenerator.createService(FoodService.class);
         initsComponent();
         return view;
     }
 
     private void initsComponent(){
-        data();
         drinkAdapter = new FoodAdapters(getContext(), drinkList);
         drinkAdapter.setListener(this);
         recyclerView.setAdapter(drinkAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        Call<List<Food>> food = drinkService.getDessert();
+            food.enqueue(new Callback<List<Food>>() {
+                @Override
+                public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                    drinkList = response.body();
+                    drinkAdapter.setDataFoodList(drinkList);
+                }
+
+                @Override
+                public void onFailure(Call<List<Food>> call, Throwable t) {
+                    Snackbar.make(view, "Oopssss", Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
     }
 
     private void data(){

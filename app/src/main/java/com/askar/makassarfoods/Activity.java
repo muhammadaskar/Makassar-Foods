@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.askar.makassarfoods.Adapters.ViewPagerAdapter;
+import com.askar.makassarfoods.Generator.ServiceGenerator;
+import com.askar.makassarfoods.Services.FoodService;
 import com.google.android.material.tabs.TabLayout;
 
 public class Activity extends AppCompatActivity {
@@ -24,10 +26,14 @@ public class Activity extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
 
+    private FoodService foodService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_);
+
+        foodService = ServiceGenerator.createService(FoodService.class);
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);

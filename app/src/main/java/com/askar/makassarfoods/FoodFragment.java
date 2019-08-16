@@ -1,6 +1,8 @@
 package com.askar.makassarfoods;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,43 +14,102 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.askar.makassarfoods.Adapters.FoodAdapters;
+import com.askar.makassarfoods.Generator.ServiceGenerator;
 import com.askar.makassarfoods.Models.Food;
+import com.askar.makassarfoods.Services.FoodService;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static com.askar.makassarfoods.Constants.Constants.KEY;
 
-public class FoodFragment extends Fragment implements FoodAdapters.OnClickListener{
+public class FoodFragment extends Fragment implements FoodAdapters.OnClickListener {
 
     View view;
     private RecyclerView recyclerView;
     private List<Food> foodList = new ArrayList<>();
     private FoodAdapters foodAdapter;
     private Food food;
+    private FoodService foodService;
 
-    public FoodFragment(){
+    private String JSON_STRING;
+
+    public FoodFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.food_fragment, container, false);
         recyclerView = view.findViewById(R.id.rv_foods_fragment);
-
+        foodService = ServiceGenerator.createService(FoodService.class);
         initsComponent();
         return view;
     }
 
-    private void initsComponent(){
-        data();
+    private void initsComponent() {
         foodAdapter = new FoodAdapters(getContext(), foodList);
         foodAdapter.setListener(this);
         recyclerView.setAdapter(foodAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        class getJSON extends AsyncTask<Void, Void, String> {
+
+            ProgressDialog loading = new ProgressDialog(getActivity());
+
+            @Override
+            protected void onPreExecute() {
+                loading.setMessage("Silahkan Tunggu...");
+                loading.show();
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                if (loading.isShowing()){
+                    loading.dismiss();
+                }
+                super.onPostExecute(s);
+            }
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                Call<List<Food>> food = foodService.getFood();
+                food.enqueue(new Callback<List<Food>>() {
+                    @Override
+                    public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                        foodList = response.body();
+                        foodAdapter.setDataFoodList(foodList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Food>> call, Throwable t) {
+                        Snackbar.make(view, "Opps !", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+                return null;
+            }
+        }
+        getJSON gj = new getJSON();
+        gj.execute();
+
+
     }
 
-    private void data(){
+    @Override
+    public void onClick(View view, int position) {
+        food = new Food();
+        food = foodList.get(position);
+        startActivity(new Intent(getActivity(), DetailsFoods.class)
+                .putExtra(KEY, food));
+    }
+
+    private void data() {
         Food food1 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/1-8.jpg", "Coto Makassar", "Makanan",
                 "Coto makassar atau coto mangkasara adalah makanan tradisional Makassar, Sulawesi Selatan. Makanan ini terbuat dari jeroan (isi perut) sapi yang direbus dalam waktu yang lama. Rebusan jeroan bercampur daging sapi ini kemudian diiris-iris lalu dibumbui dengan bumbu yang diracik secara khusus. Coto dihidangkan dalam mangkuk dan dinikmati dengan ketupat dan \"burasa\" atau yang biasa dikenal sebagai buras, yakni sejenis ketupat yang dibungkus daun pisang.");
 
@@ -67,7 +128,7 @@ public class FoodFragment extends Fragment implements FoodAdapters.OnClickListen
         foodList.add(food4);
 
         Food food5 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/8-8.jpg", "Pallu Basa", "Makanan",
-                "Pallubasa adalah makanan tradisional Makassar, Sulawesi Selatan. Seperti Coto Mangkasara (Coto Makassar), Pallubasa juga terbuat dari jeroan (isi dalam perut) sapi atau kerbau. Proses memasaknya pun hampir sama dengan Coto Makassar, yaitu direbus dalam waktu lama. Setelah matang, jeroan yang ditambah dengan daging itu diiris-iris, kemudian ditaruh/dihidangkan dalam mangkuk.\n" +"\n" +"Dahulu, Pallubasa dengan daging sapi sirloin dan tenderloin hanya disajikan untuk disantap oleh keluarga kerajaan, sementara bagian jeroan disajikan untuk masyarakat kelas bawah atau abdi dalem pengikut kerajaan. Kini, penjual-penjual Pallubasa memberikan bermacam-macam pilihan daging sapi atau jeroan untuk dihidangkan.\n" +"\n" +"Yang membedakan Pallubasa dengan Coto Makassar adalah bumbunya yang diracik khusus. Selain itu, Coto Makassar dimakan bersama ketupat, sementara Pallubasa dimakan bersama nasi putih.");
+                "Pallubasa adalah makanan tradisional Makassar, Sulawesi Selatan. Seperti Coto Mangkasara (Coto Makassar), Pallubasa juga terbuat dari jeroan (isi dalam perut) sapi atau kerbau. Proses memasaknya pun hampir sama dengan Coto Makassar, yaitu direbus dalam waktu lama. Setelah matang, jeroan yang ditambah dengan daging itu diiris-iris, kemudian ditaruh/dihidangkan dalam mangkuk.\n" + "\n" + "Dahulu, Pallubasa dengan daging sapi sirloin dan tenderloin hanya disajikan untuk disantap oleh keluarga kerajaan, sementara bagian jeroan disajikan untuk masyarakat kelas bawah atau abdi dalem pengikut kerajaan. Kini, penjual-penjual Pallubasa memberikan bermacam-macam pilihan daging sapi atau jeroan untuk dihidangkan.\n" + "\n" + "Yang membedakan Pallubasa dengan Coto Makassar adalah bumbunya yang diracik khusus. Selain itu, Coto Makassar dimakan bersama ketupat, sementara Pallubasa dimakan bersama nasi putih.");
         foodList.add(food5);
 
         Food food6 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/9-8.jpg", "Mie Titi", "Makanan",
@@ -90,7 +151,7 @@ public class FoodFragment extends Fragment implements FoodAdapters.OnClickListen
         foodList.add(food9);
 
         Food food10 = new Food("https://apabedanya.com/wp-content/uploads/2019/04/Apa-Bedanya-Lontong-Ketupat-dan-Buras-foto-radar-tarakan-e1554718148810.jpg", "Burasa", "Makanan", "Burasa adalah salah satu panganan khas masyarakat Bugis dan makassar di Sulawesi Selatan. Panganan ini dikenal juga dengan nama lapat, lontong bersantan atau buras. Bentuknya hampir mirip dengan lontong cuma agak pipih dan dimasak dengan cara tersendiri. Burasa merupakan makanan wajib bagi masyarakat Sulawesi Selatan pada hari lebaran yang bisanya tersaji bersama coto makassar ataupun opor ayam.\n" +
-                "\n" +"Panganan ini terbuat dari beras yang dimasak tertebih dahulu dengan santan yang banyak hingga menjadi nasi lembek dan selanjutnya dibungkus dengan daun pisang. Biasanya dibuat menjadi dua bagian dalam satu ikatan (menggunakan tali rapia atau daun pisang) kemudian direbus hingga matang. Panganan ini juga biasanya ditemui di luar provinsi Sulawesi Selatan seperti Gorontalo atau Kalimantan dan beberapa daerah lain di Indonesia dan Malaysia. Mungkin dikarenakan banyaknya suku Makassar dan Bugis yang merantau dan menetap di daerah-daerah tersebut sehingga panganan ini ikut menjadi bagian dari tradisi hari lebaran di daerah-daerah tersebut.");
+                "\n" + "Panganan ini terbuat dari beras yang dimasak tertebih dahulu dengan santan yang banyak hingga menjadi nasi lembek dan selanjutnya dibungkus dengan daun pisang. Biasanya dibuat menjadi dua bagian dalam satu ikatan (menggunakan tali rapia atau daun pisang) kemudian direbus hingga matang. Panganan ini juga biasanya ditemui di luar provinsi Sulawesi Selatan seperti Gorontalo atau Kalimantan dan beberapa daerah lain di Indonesia dan Malaysia. Mungkin dikarenakan banyaknya suku Makassar dan Bugis yang merantau dan menetap di daerah-daerah tersebut sehingga panganan ini ikut menjadi bagian dari tradisi hari lebaran di daerah-daerah tersebut.");
         foodList.add(food10);
 
         Food food11 = new Food("https://sahabatnesia.com/wp-content/uploads/2017/11/21-3.jpg", "Sokko / Sangkolo", "Makanan",
@@ -102,11 +163,4 @@ public class FoodFragment extends Fragment implements FoodAdapters.OnClickListen
         foodList.add(food12);
     }
 
-    @Override
-    public void onClick(View view, int position) {
-        food = new Food();
-        food = foodList.get(position);
-        startActivity(new Intent(getActivity(), DetailsFoods.class)
-                .putExtra(KEY, food));
-    }
 }

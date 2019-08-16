@@ -13,10 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.askar.makassarfoods.Adapters.FoodAdapters;
+import com.askar.makassarfoods.Generator.ServiceGenerator;
 import com.askar.makassarfoods.Models.Food;
+import com.askar.makassarfoods.Services.FoodService;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.askar.makassarfoods.Constants.Constants.KEY;
 
@@ -28,6 +35,8 @@ public class DessertFragment extends Fragment implements FoodAdapters.OnClickLis
     private FoodAdapters dessertAdapter;
     private Food dessert;
 
+    FoodService dessertService;
+
     public DessertFragment(){
 
     }
@@ -38,17 +47,38 @@ public class DessertFragment extends Fragment implements FoodAdapters.OnClickLis
         view = inflater.inflate(R.layout.dessert_fragment, container, false);
         recyclerView = view.findViewById(R.id.rv_dessert_fragment);
 
-
+        dessertService = ServiceGenerator.createService(FoodService.class);
         initsComponent();
         return view;
     }
 
     private void initsComponent(){
-        data();
         dessertAdapter = new FoodAdapters(getContext(), foodList);
         dessertAdapter.setListener(this);
         recyclerView.setAdapter(dessertAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        Call<List<Food>> dessert = dessertService.getDessert();
+            dessert.enqueue(new Callback<List<Food>>() {
+                @Override
+                public void onResponse(Call<List<Food>> call, Response<List<Food>> response) {
+                    foodList = response.body();
+                    dessertAdapter.setDataFoodList(foodList);
+                }
+
+                @Override
+                public void onFailure(Call<List<Food>> call, Throwable t) {
+                    Snackbar.make(view, "Ooopsss", Snackbar.LENGTH_SHORT).show();
+                }
+            });
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        dessert = new Food();
+        dessert = foodList.get(position);
+        startActivity(new Intent(getActivity(), DetailsFoods.class)
+            .putExtra(KEY, dessert));
     }
 
     private void data(){
@@ -94,11 +124,4 @@ public class DessertFragment extends Fragment implements FoodAdapters.OnClickLis
         foodList.add(drink1);
     }
 
-    @Override
-    public void onClick(View view, int position) {
-        dessert = new Food();
-        dessert = foodList.get(position);
-        startActivity(new Intent(getActivity(), DetailsFoods.class)
-            .putExtra(KEY, dessert));
-    }
 }
